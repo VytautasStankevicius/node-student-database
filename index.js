@@ -9,61 +9,61 @@ const students = JSON.parse(data);
 const host = "localhost";
 const port = "8888";
 const replaceTemplate = require("./modules/replaceTemplate.js");
-const sortAndFilterClass = require("./modules/sortAndFilterClass,.js");
-const sortbyX = require("./modules/sortByX.js");
+const sortClass = require("./modules/sortClass.js");
+const sortAlphabetical = require("./modules/sortAlphabetical.js");
 const main = fs.readFileSync(`${__dirname}/templates/main.html`, `utf-8`);
-const card = fs.readFileSync(`${__dirname}/templates/studentItem.html`, `utf-8`);
+const studentItem = fs.readFileSync(`${__dirname}/templates/studentItem.html`, `utf-8`);
 const studentPage = fs.readFileSync(`${__dirname}/templates/student.html`,`utf-8`);
-const dropdawnItem = fs.readFileSync(`${__dirname}/templates/dropdawnItem.html`,`utf-8`);
+const dropdownItem = fs.readFileSync(`${__dirname}/templates/dropdownItem.html`,`utf-8`);
 
 const server = http.createServer((req, res) => {
   const { query, pathname } = url.parse(req.url, true);
 
   switch (pathname) {
     case "/":
-      const cardHtml = sortbyX(students, "lastName").map((student) =>replaceTemplate(card, student));
-      const dropdawnItemHtml = sortAndFilterClass(students).map((studentClass) => replaceTemplate(dropdawnItem, studentClass));
+      const itemRender = sortAlphabetical(students, "lastName").map((student) =>replaceTemplate(studentItem, student));
+      const dropDownItemRender = sortClass(students).map((studentClass) => replaceTemplate(dropdownItem, studentClass));
       const output = main
-        .replace(`{%STUDENT_CARDS%}`, cardHtml.join(""))
-        .replace(`{%CLASS%}`, dropdawnItemHtml.join(""));
+        .replace(`{%STUDENT_CARDS%}`, itemRender.join(""))
+        .replace(`{%CLASS%}`, dropDownItemRender.join(""));
       res.writeHead(200, {"Content-Type": "text/html",});
       res.end(output);
       break;
 
     case "/class":
-      const cardHtml2 = students
+      const itemRender2 = students
         .filter((student) => student.class.includes(query.class))
-        .map((student) => replaceTemplate(card, student));
-      const dropdawnItemHtml2 = sortAndFilterClass(students).map(
-        (studentClass) => replaceTemplate(dropdawnItem, studentClass)
+        .map((student) => replaceTemplate(studentItem, student));
+      const dropDownItemRender2 = sortClass(students).map(
+        (studentClass) => replaceTemplate(dropdownItem, studentClass)
       );
-      let output2 = main.replace(`{%STUDENT_CARDS%}`, cardHtml2.join(""));
-      output2 = output2.replace(`{%CLASS%}`, dropdawnItemHtml2.join(""));
+      let output2 = main.replace(`{%STUDENT_CARDS%}`, itemRender2.join(""));
+      output2 = output2.replace(`{%CLASS%}`, dropDownItemRender2.join(""));
       res.writeHead(200, {"Content-Type": "text/html",});
       res.end(output2);
       break;
     // ---------------------Paieskos--------------------------------------------
-    case "/searchByFirstName":
-      const cardHtmlFirsName = students.filter((student) => student.firstname.includes(query.firstName)).map((student) => replaceTemplate(card, student));
-      const dropdawnItemHtmlFirsName = sortAndFilterClass(students).map((studentClass) => replaceTemplate(dropdawnItem, studentClass));
-      let outputFirsName = main.replace(`{%STUDENT_CARDS%}`,cardHtmlFirsName.join(""));
-      outputFirsName = outputFirsName.replace(`{%CLASS%}`,dropdawnItemHtmlFirsName.join(""));
+    case "/searchName":
+      const itemRenderFirstName = students.filter((student) => student.firstname.includes(query.firstName)).map((student) => replaceTemplate(studentItem, student));
+      const dropDownItemRenderFirstName = sortClass(students).map((studentClass) => replaceTemplate(dropdownItem, studentClass));
+      let outputFirsName = main.replace(`{%STUDENT_CARDS%}`,itemRenderFirstName.join(""));
+      outputFirsName = outputFirsName.replace(`{%CLASS%}`,dropDownItemRenderFirstName.join(""));
       res.writeHead(200, {"Content-Type": "text/html",});
       res.end(outputFirsName);
       break;
 
-    case "/searchByLastName":
-      const cardHtmlLastName = students.filter((student) => student.lastName.includes(query.lastName)).map((student) => replaceTemplate(card, student));
-      const dropdawnItemHtmlLastName = sortAndFilterClass(students).map((studentClass) => replaceTemplate(dropdawnItem, studentClass));
-      let outputLastName = main.replace(`{%STUDENT_CARDS%}`,cardHtmlLastName.join(""));
-      outputLastName = outputLastName.replace(`{%CLASS%}`,dropdawnItemHtmlLastName.join(""));
+    case "/searchSurname":
+      const itemRenderLastName = students.filter((student) => student.lastName.includes(query.lastName)).map((student) => replaceTemplate(studentItem, student));
+      const dropDownItemRenderLastName = sortClass(students).map((studentClass) => replaceTemplate(dropdownItem, studentClass));
+      let outputLastName = main.replace(`{%STUDENT_CARDS%}`,itemRenderLastName.join(""));
+      outputLastName = outputLastName.replace(`{%CLASS%}`,dropDownItemRenderLastName.join(""));
       res.writeHead(200, {"Content-Type": "text/html",});
       res.end(outputLastName);
       break;
     
-    case "/searchByClass":
-      const outputClass = main.replace(`{%STUDENT_CARDS%}`, students.filter(student => student.class.includes(query.class)).map(student => replaceTemplate(card, student)).join(''))
-        .replace(`{%CLASS%}`, sortAndFilterClass(students).map(studentClass => replaceTemplate(dropdawnItem, studentClass)).join(''));
+    case "/searchClass":
+      const outputClass = main.replace(`{%STUDENT_CARDS%}`, students.filter(student => student.class.includes(query.class)).map(student => replaceTemplate(studentItem, student)).join(''))
+        .replace(`{%CLASS%}`, sortClass(students).map(studentClass => replaceTemplate(dropdownItem, studentClass)).join(''));
       res.writeHead(200, {"Content-Type": "text/html"});
       res.end(outputClass);
       break;

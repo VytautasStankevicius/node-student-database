@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Student information database</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body style="width: 100%;height: 100vh;background: linear-gradient(to right,pink 0%,pink 50%,paleturquoise 50%,paleturquoise 100%);">
+    <nav class="navbar container">
+      <div class="container-fluid d-flex justify-content-between">
+        <a class="navbar-brand" href="/"> Student information database </a>
+        </div>
+      </div>
+    </nav>
+    <section class="container justify-content-md-center text-center search">
+      <!--///////////////////////////////////////////////////////////////////////-->
+      <form action="/searchByFirstName" method="get" class="input-group" style ="margin-bottom: 20px;">
+        <input
+          type="text"
+          name="firstName"
+          class="form-control"
+          placeholder="Search by name"
+        />
+        <button type="submit" class="btn" style="background-color: pink !important;" >Search</button>
+      </form>
+      <!--//////////////////////////////////////////////////////////////////////-->
+      <form action="/searchByLastName" method="get" class="input-group" style ="margin-bottom: 20px;">
+        <input
+          type="text"
+          name="lastName"
+          class="form-control"
+          placeholder="Search by surname"
+        />
+        <button type="submit" class="btn" style="background-color: pink !important;">Search</button>
+      </form>
+      <!--///////////////////////////////////////////////////////////////////////-->
+      <form action="/searchByClass" method="get" class="input-group" style ="margin-bottom: 20px;">
+        <input
+          type="text"
+          name="class"
+          class="form-control"
+          placeholder="Search by class"
+        />
+        <button type="submit" class="btn" style="background-color: pink !important;">Search</button>
+      </form>
+      <!--///////////////////////////////////////////////////////////////////////-->
+    </section>
+    <section class="container justify-content-md-center">
+      <h2>Students</h2>
+      <!-- <a class="navbar-brand btn btn-primary" href="/average"> Average score </a> -->
+      <div class="dropdown">
+        <button
+          class="btn dropdown-toggle" style="background-color: paleturquoise !important;"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Choose a class
+        </button>
+        <ul class="dropdown-menu">
+          {%CLASS%}
+        </ul>
+      </div>
+      <div class="row" style="display: flex;flex-wrap: wrap;gap:  20px;margin-top:20px; ">{%STUDENT_CARDS%}</div>
+    </section>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
